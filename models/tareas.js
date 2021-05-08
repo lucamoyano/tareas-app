@@ -1,3 +1,6 @@
+const moment = require('moment');
+moment().format(); 
+
 const Tarea = require('./tarea');
 
 class Tareas {
@@ -49,8 +52,7 @@ class Tareas {
         console.log();
         let contador = 0;
         
-        this.listArr.forEach( (tarea, i) => {
-            const idx = `${i + 1}`.green;
+        this.listArr.forEach( (tarea) => {
             const { desc, completadoEn } = tarea;
             const estado = ( completadoEn ) 
                                 ? 'Completada'.green
@@ -65,6 +67,31 @@ class Tareas {
             }
         });
     }
+
+    borrarTarea( id = ''){
+
+        if ( this._listado[id] ){
+            delete this._listado[id];
+        }
+
+    }
+
+    toggleCompletadas( ids = [] ){
+        ids.forEach( id => {
+            const tarea = this._listado[id];
+            if ( !tarea.completadoEn ) {
+                tarea.completadoEn = moment().format('MMMM Do YYYY');
+            }
+        })
+
+        this.listArr.forEach( tarea => {
+            if( !ids.includes( tarea.id ) ) {
+                this._listado[tarea.id].completadoEn = null;
+            }
+        });
+    }
+
+    
 
 }
 
